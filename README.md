@@ -1,4 +1,4 @@
-## My Project
+## Build a FM powered customer service bot with Agents for Amazon Bedrock
 
 TODO: Fill this README out!
 
