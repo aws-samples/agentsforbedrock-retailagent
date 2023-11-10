@@ -4,11 +4,17 @@ import boto3
 import sqlite3
 from datetime import datetime
 import random
+import logging
+import os
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 s3 = boto3.client('s3')
-bucket = '' #Name of bucket with data file and OpenAPI file
-db_name = '' #Location of data file in S3
+bucket = os.environ.get('BUCKET_NAME')  #Name of bucket with data file and OpenAPI file
+db_name = 'demo_csbot_db' #Location of data file in S3
 local_db = '/tmp/csbot.db' #Location in Lambda /tmp folder where data file will be copied
+
 #Download data file from S3
 s3.download_file(bucket, db_name, local_db)
 
@@ -22,6 +28,8 @@ def load_data():
     global conn
     conn = sqlite3.connect(local_db)
     cursor = conn.cursor()
+    logger.info('Completed initial data load ')
+
     return cursor
     
 #Function returns all customer info for a particular customerId
@@ -36,6 +44,7 @@ def return_customer_info(custName):
     for name in names:
         valDict[name]=resp[0][index]
         index = index + 1
+    logger.info('Customer Info retrieved')
     return valDict
    
     
@@ -57,6 +66,7 @@ def return_shoe_inventory():
         index = 0
         valDict.append(interimDict)
         interimDict={}
+    logger.info('Shoe info retrieved')
     return valDict
 
     
@@ -74,9 +84,8 @@ def place_shoe_order(ssId, custId):
 
     #Writing updated db file to S3 and setting cursor to None to force reload of data
     s3.upload_file(local_db, bucket, db_name)
-    print("Wrote file to S3")
     cursor = None
-    
+    logger.info('Shoe order placed')
     return 1;
      
 
@@ -85,12 +94,12 @@ def lambda_handler(event, context):
     global cursor
     if cursor == None:
         cursor = load_data()
-    id = 0
-    print(event['apiPath'])
+    id = ''
     api_path = event['apiPath']
+    logger.info('API Path')
+    logger.info(api_path)
     
     if api_path == '/customer/{CustomerName}':
-        print("in cust details")
         parameters = event['parameters']
         for parameter in parameters:
             if parameter["name"] == "CustomerName":
