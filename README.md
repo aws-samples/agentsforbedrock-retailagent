@@ -148,7 +148,7 @@ To avoid incurring future charges, delete the resources. You can do this by dele
 ![](./img/ML-15539-cfn-stack-delete.png)
 
 
-Feel free to download and test the code used in this post from the GitHub [agents for Amazon Bedrock repository](https://github.com/aws-samples/agentsforbedrock-retailagent). You can also invoke the agents for Amazon Bedrock programmatically; an [example Jupyter Notebook](https://github.com/aws-samples/agentsforbedrock-retailagent/workshop/test_retailagent_agentsforbedrock.ipynb) is provided in the repository.
+Feel free to download and test the code used in this post from the GitHub [agents for Amazon Bedrock repository](https://github.com/aws-samples/agentsforbedrock-retailagent). You can also invoke the agents for Amazon Bedrock programmatically; an [example Jupyter Notebook](https://github.com/aws-samples/agentsforbedrock-retailagent/tree/main/workshop) is provided in the repository.
 
 ### Conclusion
 
